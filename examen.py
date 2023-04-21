@@ -25,7 +25,7 @@ import openai
 openai.api_key = OPENAI_API_KEY
 
 client = MongoClient("tu_mongodb_uri")
-db = client["tu_base_de_datos"]
+db = client["Jaguar"]
 col_examenes = db["examenes"]
 
 
@@ -84,7 +84,7 @@ def enviar_email(profesor_email, asunto, mensaje):
     return requests.post(
         f'https://api.mailgun.net/v3/{MAILGUN_DOMAIN}/messages',
         auth=('api', MAILGUN_API_KEY),
-        data={'from': mailgun_remitente,
+        data={'from': MAILGUN_DOMAIN,
               'to': profesor_email,
               'subject': asunto,
               'text': mensaje})

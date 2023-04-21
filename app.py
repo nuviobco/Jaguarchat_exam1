@@ -39,7 +39,7 @@ api_key = os.getenv("OPENAI_API_KEY")
 mongo_uri = os.environ.get("MONGO_URI")
 mongo_client = pymongo.MongoClient(mongo_uri)
 
-db = mongo_client["jaguar_chat"]
+db = mongo_client["Jaguar"]
 col_usuarios = db["usuarios"]
 col_historial = db["historial"]
 
