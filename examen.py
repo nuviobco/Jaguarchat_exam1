@@ -2,12 +2,12 @@ import openai
 import requests 
 from pymongo import MongoClient
 from analisis import analizar_temas_mas_consultados
-from analisis import col_historial
+from analisis import obtener_datos
 import os
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify, render_template, send_file, redirect, url_for, flash, session, make_response
 from flask import render_template
-from app import app  # Asume que la instancia de Flask se llama 'app' y está en el archivo 'app.py'
+from app import app  
 
 @app.route('/examen')
 def examen():
@@ -27,13 +27,14 @@ openai.api_key = OPENAI_API_KEY
 client = MongoClient("tu_mongodb_uri")
 db = client["Jaguar"]
 col_examenes = db["examenes"]
+col_historial = db["historial"]
 
 
 def generar_preguntas():
     # Obtener los temas más consultados
-    prompts = col_historial.find()  # Asegúrate de importar col_historial desde tu archivo analisis.py
+    user_id = "tu_user_id"  # Reemplaza esto con el user_id apropiado
+    prompts = obtener_datos(user_id)
     temas_mas_consultados = analizar_temas_mas_consultados(prompts)
-
     # Utiliza la API de OpenAI para generar preguntas basadas en los temas más consultados
     preguntas = []
     for tema, _ in temas_mas_consultados:
