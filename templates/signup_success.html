@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Registro exitoso - Jaguar Chat</title>
+    <style>
+        body {
+            background-image: url('https://i.ibb.co/vmQBcNH/fondo-app.jpg');
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(243, 230, 170, 0.8);
+            border-radius: 5px;
+            text-align: center;
+            position: relative;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 200px;
+        }
+
+        .message-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        .login-link {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .login-link a {
+            color: #fff;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://i.ibb.co/sPPL3F2/jaguar3.png" alt="Bienvenido/a" width="200px">
+        <h2>Registro exitoso</h2>
+        <div class="message-container">
+            <p>{{ message }}</p>
+        </div>
+    </div>
+</body>
+</html>

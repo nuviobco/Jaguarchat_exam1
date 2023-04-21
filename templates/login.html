@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar sesión</title>
+    <style>
+        body {
+            background-image: url("https://i.ibb.co/vmQBcNH/fondo-app.jpg"); 
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        .container {
+            max-width: 500px;
+            margin: 100px auto;
+            padding: 20px;
+            text-align: center;
+            background-color: rgba(243, 217, 161, 0.8);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+        }
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-top: 20px;
+        }
+        input[type="submit"] {
+            background-color: #e9b118;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        
+        input[type="submit"] {
+            background-color: #e9b118;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+        input[type="submit"]:active {
+            background-color: #0fa81c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://i.ibb.co/sPPL3F2/jaguar3.png" alt="Bienvenido/a" width="200px">
+        <h1>Iniciar sesión</h1>
+        
+        <form method="POST" action="{{ url_for('login') }}">
+            <label for="email">Email de Usuario:</label>
+            <br>
+            <input type="email" class="form-control" id="email" name="email" ...>
+            <br><br>
+            <label for="password">Contraseña:</label>
+            <br>
+            <input type="password" class="form-control" id="password" name="password" ...>
+            <br><br>
+            <input type="submit" value="Iniciar sesión">
+        </form>
+
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+        <p>¿No tienes una cuenta? <a href="{{ url_for('signup') }}">Registrarse</a></p>
+        <a href="/recuperar_contraseña">¿Olvidaste tu contraseña?</a>
+        <script>
+            document.body.addEventListener("keydown", function(event) {
+                if (event.key === "Enter") {
+                    document.getElementById("login-button").click();
+                }
+            });
+        </script>
+    </div>
+</body>
+</html>

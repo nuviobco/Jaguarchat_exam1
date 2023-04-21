@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            background-image: url("https://i.ibb.co/vmQBcNH/fondo-app.jpg"); /* URL de la imagen de fondo */
+            background-size: cover;
+            background-repeat: repeat;
+            background-position: center center;
+            font-family: sans-serif;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://i.ibb.co/sPPL3F2/jaguar3.png" alt="Logo de Jaguar Chat" width="200px">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar contraseña</title>
+</head>
+<body>
+    <h1>Recuperar contraseña</h1>
+    {% if success %}
+        <p>Se ha enviado un correo electrónico con instrucciones para restablecer tu contraseña. Por favor, revisa tu bandeja de entrada.</p>
+    {% else %}
+        <form action="/recuperar_contraseña" method="post">
+            <div>
+                <label for="email">Correo electrónico:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <button type="submit">Solicitar recuperación</button>
+        </form>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historial de conversaciones</title>
+    <style>
+        body {
+            background-image: url("https://i.ibb.co/vmQBcNH/fondo-app.jpg"); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            font-family: sans-serif;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ffffff;
+        }
+        th {
+            background-color: #006600bb;
+        }
+        td {
+            background-color: #008000d3;
+        }
+        a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .user-info-container {
+            background-color: rgba(0, 128, 0, 0.808);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .new-style {
+            font-size: 18px;
+            font-weight: bold;
+
+        }
+        .boton-verde {
+            display: inline-block;
+            background-color: #dfa70b;
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .boton-verde:hover {
+            background-color: #006600a1;
+            color: #ffffff;
+        
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://i.ibb.co/sPPL3F2/jaguar3.png" alt="Jaguar Chat Logo" width="200px">
+        <h1>Historial de conversaciones</h1>
+        <div class="user-info-container">
+            <h2>Información del estudiante</h2>
+            <p>Nombre: {{ nombre }}</p>
+            <p>Colegio: {{ colegio }}</p>
+            <p>Grado: {{ grado }}</p>
+            <p>Profesor: {{ profesor }}</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Pregunta</th>
+                    <th>Respuesta</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for conversacion in historial %}
+                <tr>
+                    <td>{{ conversacion.fecha }}</td>
+                    <td>{{ conversacion.pregunta }}</td>
+                    <td>{{ conversacion.respuesta }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p class="new-style"></p>
+        <p><a href="/">Volver al inicio</a></p>
+        <a href="{{ url_for('analisis', user_id=user_id) }}" class="boton-verde">Realizar análisis</a>
+    </div>
+</body>
+</html>

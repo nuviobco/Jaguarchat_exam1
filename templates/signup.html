@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <title>Registro - Jaguar Chat</title>
+    <style>
+        body {
+            background-image: url('https://i.ibb.co/vmQBcNH/fondo-app.jpg');
+            background-size: cover;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: rgba(243, 230, 170, 0.8);
+            border-radius: 5px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        img {
+            display: block;
+            margin: 0 auto 20px auto;
+            max-width: 200px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            display: block;
+            width: 95%;
+            height: 40px;
+            padding: 6px 12px;
+            font-size: 16px;
+            line-height: 1.42857143;
+            color: #555;
+            background-color: #aaf5b0;
+            background-image: none;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn-register {
+            display: block;
+            margin: 20px auto 0 auto;
+            width: 100%;
+            max-width: 200px;
+            background-color: #e9b118;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        
+        .btn-register:hover {
+            background-color: #74d900;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://i.ibb.co/sPPL3F2/jaguar3.png" alt="Bienvenido/a" width="200px">
+        <h2>Registro</h2>
+        <form method="POST" action="{{ url_for('signup') }}">
+            {{ form.csrf_token }}
+            <div class="form-group">
+                <label for="{{ form.first_name.id }}">Nombre</label>
+                {{ form.first_name(class="form-control") }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.last_name.id }}">Apellido</label>
+                {{ form.last_name(class="form-control") }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.email.id }}">Correo electrónico</label>
+                {{ form.email(class="form-control") }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.password.id }}">Contraseña</label>
+                {{ form.password(class="form-control") }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.confirm_password.id }}">Confirmar Contraseña</label>
+                {{ form.confirm_password(class="form-control") }}
+            </div>            
+            <div class="form-group">
+                <label for="{{ form.grade.id }}">Grado de estudio</label>
+                {{ form.grade(class="form-control") }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.school.id }}">Colegio</label>
+                {{ form.school(class="form-control") }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.teacher.id }}">Profesor</label>
+                {{ form.teacher(class="form-control") }}
+            </div>
+            <div class="form-check">
+                {{ form.accept_terms(class="form-check-input") }}
+                <label class="form-check-label" for="{{ form.accept_terms.id }}">Acepto los <a href="{{ url_for('terms_and_conditions') }}">términos y condiciones</a></label>
+            </div>
+            <button type="submit" class="btn-register">{{ form.submit.label.text }}</button>
+        </form>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    {% if category == 'success' %}
+                        <div class="alert alert-success" role="alert">
+                            {{ message }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+</body>
+</html>
+```

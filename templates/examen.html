@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("https://i.ibb.co/vmQBcNH/fondo-app.jpg"); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            font-family: sans-serif;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+        }
+        .boton-amarillo {
+            display: inline-block;
+            background-color: rgb(255, 187, 0);
+            color: rgb(253, 252, 252);
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .boton-amarillo:hover {
+            background-color: #29f10f;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Examen</h1>
+        <form id="examen-form">
+            {% for pregunta in preguntas %}
+            <div class="form-group">
+                <label for="pregunta-{{ loop.index }}">{{ loop.index }}. {{ pregunta.texto }}</label>
+                <input type="text" class="form-control" id="pregunta-{{ loop.index }}" name="pregunta-{{ loop.index }}" placeholder="Escribe tu respuesta aquí">
+            </div>
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Calificar</button>
+        </form>
+    </div>
+
+    <p class="text-center mt-4"><a href="/">Volver al inicio</a></p>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

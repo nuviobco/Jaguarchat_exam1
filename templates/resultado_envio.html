@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado del envío</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-image: url("https://i.ibb.co/vmQBcNH/fondo-app.jpg"); /* URL de la imagen de fondo */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            font-family: sans-serif;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 100px;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+        
+        }
+        .logout-button {
+            display: inline-block;
+            background-color: #e9b118;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #d7a210;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://i.ibb.co/sPPL3F2/jaguar3.png" alt="Logo de Jaguar Chat" width="200px">
+        {% if enviado %}
+            <h1>Envío exitoso</h1>
+            <p>El análisis ha sido enviado correctamente al correo del profesor.</p>
+        {% else %}
+            <h1>Envío fallido</h1>
+            <p>Ocurrió un error al enviar el análisis. Por favor, inténtalo de nuevo.</p>
+        {% endif %}
+        <p><a href="/">Volver al inicio</a></p>
+        <a href="{{ url_for('logout') }}" class="logout-button">Cerrar sesión</a>
+
+    </div>
+</body>
+</html>

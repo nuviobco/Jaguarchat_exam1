@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis de conversaciones</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1"></script>
+    <style>
+        body {
+            background-image: url("https://i.ibb.co/vmQBcNH/fondo-app.jpg"); 
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            font-family: sans-serif;
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            text-align: center;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 30px;
+        }
+        .bg-green {
+            background-color: #008000b7;
+        }
+        .border-green {
+            border: 1px solid #008000b7;
+        }
+        a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .boton-amarillo {
+            display: inline-block;
+            background-color: rgb(255, 187, 0);
+            color: rgb(253, 252, 252);
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .boton-amarillo:hover {
+            background-color: #29f10f;
+            color: white;
+        }
+
+        .user-info-container {
+            background-color: #12830a; 
+            padding: 20px;
+            border-radius: 10px;
+        }
+   
+        .grafico-container-fondo-verde {
+            background-color: #145523ad;
+            margin-bottom: 1.5rem;
+            padding: 20px;
+            border-radius: 10px;
+            min-width: 600px;
+            min-height: 400px;
+        }
+        
+        .grafico-pie-contenedor {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .grafico-pie {
+            width: 450px !important;
+            height: 450px !important;
+        }
+        
+        .grafico-barra-container,
+        .grafico-linea-container,
+        .grafico-pie-container {
+            margin-bottom: 1.5rem;
+        }
+        .fila-verde-oscuro {
+            background-color: #003d0eb7; 
+        }
+        
+        .fila-verde-claro {
+            background-color: #12830a9d; 
+        }    
+        
+        .text-center {
+            text-align: center;
+        }
+        .boton-examen {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #ff5722;
+            color: #ffffff;
+            font-size: 18px;
+            padding: 10px 20px;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: background-color 0.3s ease;
+            }
+            
+        .boton-examen:hover {
+            background-color: #f4511e;
+            color: #ffffff;
+            text-decoration: none;
+            
+                
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://i.ibb.co/sPPL3F2/jaguar3.png" alt="Logo de Jaguar Chat" width="200px">
+        <h1>Análisis de conversaciones</h1>
+        <div class="user-info-container">
+            <h2>Información del estudiante</h2>
+            <p>Nombre: {{ nombre_completo }}</p>
+            <p>Colegio: {{ colegio }}</p>
+            <p>Grado: {{ grado }}</p>
+            <p>Profesor: {{ profesor }}</p>
+</div>
+        <h2>Resultados del análisis</h2>
+        
+        <div class="grafico-container-fondo-verde">
+            <div class="grafico-barra-container">
+                <canvas id="temasConsultadosChart"></canvas>
+            </div>
+            <div class="grafico-pie-container">
+                <div class="grafico-pie-contenedor">
+                    <canvas id="horariosActividadChart" class="grafico-pie"></canvas>
+                </div>
+            </div>
+            <div class="grafico-linea-container">
+                <canvas id="nivelComprensionChart"></canvas>
+            </div>
+        </div>
+        <table class="table table-dark table-bordered mt-3 tabla-verde">
+            <thead>
+                <tr>
+                    <th>Categoría</th>
+                    <th>Texto</th>
+                    <th>Resultado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="fila-verde-oscuro">
+                    <td rowspan="{{ temas_consultados|length }}">Temas más consultados</td>
+                    <td>{{ temas_consultados[0][0] }}</td>
+                    <td>{{ temas_consultados[0][1] }}</td>
+                </tr>
+                {% for tema, conteo in temas_consultados[1:] %}
+                <tr class="fila-verde-oscuro">
+                    <td>{{ tema }}</td>
+                    <td>{{ conteo }}</td>
+                </tr>
+                {% endfor %}
+                <tr class="fila-verde-claro">
+                    <td rowspan="{{ palabras_contadas|length }}">Palabras más utilizadas</td>
+                    <td>{{ palabras_contadas[0][0] }}</td>
+                    <td>{{ palabras_contadas[0][1] }}</td>
+                </tr>
+                {% for palabra, conteo in palabras_contadas[1:] %}
+                <tr class="fila-verde-claro">
+                    <td>{{ palabra }}</td>
+                    <td>{{ conteo }}</td>
+                </tr>
+                {% endfor %}
+                <tr class="fila-verde-oscuro">
+                    <td rowspan="{{ horas_mayor_actividad|length }}">Horario de mayor actividad</td>
+                    <td>{{ horas_mayor_actividad[0][0] }}:00</td>
+                    <td>{{ horas_mayor_actividad[0][1] }}</td>
+                </tr>
+                {% for hora, conteo in horas_mayor_actividad[1:] %}
+                <tr class="fila-verde-oscuro">
+                    <td>{{ hora }}:00</td>
+                    <td>{{ conteo }}</td>
+                </tr>
+                {% endfor %}
+                <tr class="fila-verde-claro">
+                    <td rowspan="{{ nivel_comprension|length }}">Nivel de comprensión</td>
+                    <td>{{ nivel_comprension[0].texto }}</td>
+                    <td>{{ nivel_comprension[0].nivel_comprension }}</td>
+                </tr>
+                {% for resultado in nivel_comprension[1:] %}
+                <tr class="fila-verde-claro">
+                    <td>{{ resultado.texto }}</td>
+                    <td>{{ resultado.nivel_comprension }}</td>
+                </tr>
+                {% endfor %}
+                <tr class="fila-verde-oscuro">
+                    <td rowspan="{{ sentimientos|length }}">Análisis de sentimientos</td>
+                    <td>{{ sentimientos[0].texto }}</td>
+                    <td>{{ sentimientos[0].puntaje_sentimiento }} ({{ sentimientos[0].etiqueta_sentimiento }})</td>
+                </tr>
+                {% for resultado in sentimientos[1:] %}
+                <tr class="fila-verde-oscuro">
+                    <td>{{ resultado.texto }}</td>
+                    <td>{{ resultado.puntaje_sentimiento }} ({{ resultado.etiqueta_sentimiento }})</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>        
+    <script>
+        const temasConsultadosData = {{ temas_consultados|tojson }};
+        const temasConsultadosLabels = temasConsultadosData.map(item => item[0]);
+        const temasConsultadosCounts = temasConsultadosData.map(item => item[1]);
+        const temasConsultadosCtx = document.getElementById('temasConsultadosChart').getContext('2d');
+        const temasConsultadosChart = new Chart(temasConsultadosCtx, {
+                type: 'bar',
+                data: {
+                    labels: temasConsultadosLabels,
+                    datasets: [{
+                        data: temasConsultadosCounts,
+                        backgroundColor: 'rgba(255, 230, 87 , 0.2)',
+                    }]
+                },
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Temas más consultados',
+                            font: {
+                                size: 24,
+                                weight: 'bold',
+                            },
+                            color: 'white',
+                        },
+                        legend: {
+                            display: false,
+                        },
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: 'white',
+                            },
+                        },
+                        y: {
+                            ticks: {
+                                color: 'white',
+                            },
+                        },
+                    },
+                },
+            });
+    
+        const horariosActividadData = {{ horas_mayor_actividad|tojson }};
+        const horariosActividadLabels = horariosActividadData.map(item => item[0]);
+        const horariosActividadCounts = horariosActividadData.map(item => item[1]);
+        const horariosActividadCtx = document.getElementById('horariosActividadChart').getContext('2d');
+        const horariosActividadChart = new Chart(horariosActividadCtx, {
+            type: 'pie',
+            data: {
+            labels: horariosActividadLabels,
+            datasets: [{
+                data: horariosActividadCounts,
+                backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b'], // Cambie los colores aquí
+            }],
+        },
+        options: {
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Horario de mayor actividad',
+                    font: {
+                        size: 24,
+                        weight: 'bold',
+                    },
+                    color: 'white',
+                },
+                legend: {
+                    labels: {
+                        color: 'white',
+                    },
+                },
+            },
+        },
+    });
+    
+        const nivelComprensionData = {{ nivel_comprension|tojson }};
+        const nivelComprensionLabels = nivelComprensionData.map(item => item.texto);
+        const nivelComprensionCounts = nivelComprensionData.map(item => item.nivel_comprension);
+        const nivelComprensionCtx = document.getElementById('nivelComprensionChart').getContext('2d');
+        const nivelComprensionChart = new Chart(nivelComprensionCtx, {
+            type: 'line',
+            data: {
+                labels: nivelComprensionLabels,
+                datasets: [{
+                    label: 'Nivel de comprensión',
+                    data: nivelComprensionCounts,
+                    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+                    borderColor: 'rgba(255, 255, 255, 1)', 
+                    borderWidth: 1,
+                }],
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Nivel de comprensión',
+                        font: {
+                            size: 24,
+                            weight: 'bold',
+                        },
+                        color: 'white',
+                    },
+                    legend: {
+                        labels: {
+                            color: 'white',
+                        },
+                    },
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: 'white',
+                        },
+                    },
+                    y: {
+                        ticks: {
+                            color: 'white',
+                        },
+                    },
+                },
+            },
+        });
+    </script>
+</div>
+<p class="mt-4 text-center"><a href="/historial">Ver historial de conversaciones</a></p>
+<p class="text-center"><a href="/">Volver al inicio</a></p>
+<div class="text-center">
+    <a href="{{ url_for('enviar_analisis') }}" class="boton-amarillo">Enviar análisis por correo</a>
+</div>
+    <a href="/examen" class="boton-examen">Realizar examen</a>
+
+</body>
+</html>

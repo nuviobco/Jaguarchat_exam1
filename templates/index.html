@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <script>
+        function openHistory() {
+            window.location.href = "historial.html";
+        }
+    </script>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=2.0">
+    <title>Aplicación web de Jaguar Chat</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        header img {
+            max-width: 120%;
+            height: auto;
+            max-height: 500px;
+            display: block;
+            margin: 0 auto;
+        }
+
+        header h1 {
+            margin: 20px 0;
+            font-size: 48px;
+            color: #fcd25f;
+            text-align: center;
+        }
+
+        main {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .input-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .input-container label {
+            margin-right: 10px;
+            font-size: 24px;
+            color: #e6c353;
+        }
+
+        .input-container input[type="text"] {
+            font-size: 24px;
+            padding: 10px;
+            border: 2px solid #f3c428;
+            border-radius: 5px;
+            flex: 1;
+        }
+
+        .input-container button {
+            font-size: 24px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #f3c428;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .input-container button:hover {
+            background-color: #e5bb00;
+        }
+
+        .response-container {
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .response-container h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #e5bb00;
+        }
+
+        .response-container p {
+            font-size: 24px;
+            margin: 0;
+            color: #000;
+            background-color: #FFF7E8;
+            border-radius: 5px;
+            padding: 22px;
+            margin-top: 22px;
+            max-height: 200px; 
+            overflow-y: auto; 
+        }
+
+        #historyButton {
+            position: fixed;
+            left: 50%;
+            bottom: 20px;
+            transform: translateX(-50%);
+            font-size: 32px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #f3c428;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        
+        #history-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            background-color: #3b0ce6;
+            padding: 10px;
+        }
+
+        #history-container a {
+            font-size: 24px;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .video-container {
+            position: fixed;
+            overflow: hidden;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+          }
+          
+        .video {
+            width: 200%;
+            height: 200%;
+            object-fit: cover;
+          }
+          
+          .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 50%;
+            height: 0%;
+            background-color: rgba(4, 13, 138, 0.5); 
+          }
+          
+          .content {
+            position: relative;
+            z-index: 1;
+          }
+    </style>
+</head>
+
+<body>
+    <div class="video-container">
+        <video autoplay loop muted playsinline>
+            <source src="static/video.mp4" type="video/mp4">
+        </video>
+        <div class="video-overlay"></div>
+    </div>
+    <div class="content">
+        <header>
+            <img src="https://i.ibb.co/sPPL3F2/jaguar3.png" alt="jaguar3" width="200px" border="0"></a>
+            <h1></h1>
+        </header>
+    <main>
+        <div class="input-container">
+            <label for="prompt">Haz tu pregunta:</label>
+            <input type="text" id="prompt" onkeydown="onInputKeyDown(event)">
+            <button id="sendButton" onclick="generateResponse()">Enviar</button>
+            <div id="history-container">
+                <a href="{{ url_for('historial') }}">Ver historial</a>
+              </div>
+        </div>
+        </div>
+        <div class="response-container">
+            <h2>Respuesta:</h2>
+            <p id="response"></p>
+        </div>
+        <div id="tokens-container" style="position: fixed; top: 10px; right: 10px; font-size: 14px; color: #fff; padding: 5px; border-radius: 5px; background-color: rgba(216, 3, 198, 0.562);">
+            <p>Tokens utilizados: <span id="tokens-usados">0</span></p>
+        </div>
+    </main>
+
+    <script>
+        async function generateResponse() {
+            const promptInput = document.getElementById("prompt");
+            const responseOutput = document.getElementById("response");
+        
+            const response = await fetch("/generate_response", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ prompt: promptInput.value })
+            });
+        
+            if (response.status === 402) {
+                window.location.href = "/pagina_pago";
+                return;
+            }
+        
+            const jsonResponse = await response.json();
+            responseOutput.innerHTML = jsonResponse.response;
+        
+            
+            actualizarTokensDisponibles(jsonResponse.tokens_usados);
+        
+            promptInput.value = "";
+            speak(jsonResponse.response);
+            playSound();
+            changeColor();
+        }
+
+        function onInputKeyDown(event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                generateResponse();
+                playSound();
+                changeColor();
+            }
+        }
+        
+        function playSound() {
+            const audio = new Audio("/static/ups.wav");
+            audio.play();
+        }
+
+        function speak(text) {
+            const synth = window.speechSynthesis;
+        
+            if (synth.getVoices().length === 0) {
+                synth.addEventListener("voiceschanged", function () {
+                    speak(text);
+                });
+                return;
+            }
+        
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'es-ES';
+        
+            if (synth.speaking) {
+                synth.cancel();
+            }
+        
+            synth.speak(utterance);
+        }
+        
+        function changeColor() {
+            const sendButton = document.getElementById("sendButton");
+            sendButton.style.backgroundColor = "#00FF00";
+            setTimeout(() => {
+                sendButton.style.backgroundColor = "#f3c428";
+            }, 300);
+        }
+
+        
+        function actualizarTokensDisponibles(tokens_usados) {
+            const tokensUsadosElement = document.getElementById("tokens-usados");
+            tokensUsadosElement.textContent = tokens_usados;
+        }
+        
+    </script>
+    <body>
+</html>
