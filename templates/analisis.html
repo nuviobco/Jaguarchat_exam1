@@ -158,14 +158,13 @@
             </thead>
             <tbody>
                 <tr class="fila-verde-oscuro">
-                    <td rowspan="{{ temas_consultados|length }}">Temas más consultados</td>
-                    <td>{{ temas_consultados[0][0] }}</td>
-                    <td>{{ temas_consultados[0][1] }}</td>
-                {% if temas_consultados %}
-                    <td>{{ temas_consultados[0][0] }}</td>
-                {% else %}
-                    <td>No hay temas consultados</td>
-                {% endif %}
+                    {% if temas_consultados %}
+                        <td rowspan="{{ temas_consultados|length }}">Temas más consultados</td>
+                        <td>{{ temas_consultados[0][0] }}</td>
+                        <td>{{ temas_consultados[0][1] }}</td>
+                    {% else %}
+                        <td colspan="3">No hay temas consultados</td>
+                    {% endif %}
                 </tr>
                 {% for tema, conteo in temas_consultados[1:] %}
                 <tr class="fila-verde-oscuro">
