@@ -367,7 +367,7 @@ def generate_response():
     response = openai.Completion.create(
         engine="text-davinci-003",
         prompt=f"hola, buenos días, buenas tardes, buenas noches, saludos, qué, cómo, donde, cuándo, calcula, cuanto, por favor, cuantos grados, cuantos tipos, por qué, quien, de qué forma, de qué manera, dame, ejercicios, concepto, definición, cuál, cuales, figurar, desarrolar, cuando nació, ser muy amigable en el contexto de la educación básica en: 1. matemáticas (resolver, suma, resta, multiplicación, división, álgebra, geometría, fracciones, decimales, porcentajes, resolución de problemas, estadística, cómo se calcula, como se escribe, cúal es la fórmula, que ejercicos, resolver, etc.), 2. lengua y literatura (gramática, ortografía, tiempos verbales, vocabulario, lectura, escritura creativa, análisis de textos literarios, poesía, etc.), 3. ciencias naturales (biología, física, química, medio ambiente, cambio climático, energía, tecnología, salud, etc.), 4. estudios sociales (historia, geografía, ciudades, capitales, paises, continentes, simón bolívar, colonia, independencia, eloy alfaro, provincias, rios, montañas, volcanes, islas, américa latina, civismo, cultura, derechos humanos, democracia, economía, etc.), 5. habilidades comunicativas en inglés (vocabulario, gramática, conversación, lectura, escritura, pronunciación, etc.). saludar, agradecer, felicitar, agradecer. responde: {prompt}",
-        max_tokens=250,
+        max_tokens=200,
         n=1,
         stop=None,
         temperature=0.5,
@@ -381,7 +381,7 @@ def generate_response():
     })
 
     intentos = 0
-    while not es_tema_educacion_basica(response) and intentos < 2:
+    while not es_tema_educacion_basica(response) and intentos < 1:
         response = openai.Completion.create(
             engine="text-davinci-003",
             prompt=f"hola, buenos días, buenas tardes, buenas noches, saludos, qué, cómo, donde, cuándo, calcula, cuanto, por favor, cuantos grados, cuantos tipos, por qué, quien, de qué forma, de qué manera, dame, ejercicios, concepto, definición, cuál, cuales, figurar, desarrolar, cuando nació, ser muy amigable en el contexto de la educación básica en: 1. matemáticas (resolver, suma, resta, multiplicación, división, álgebra, geometría, fracciones, decimales, porcentajes, resolución de problemas, estadística, cómo se calcula, como se escribe, cúal es la fórmula, que ejercicos, resolver, etc.), 2. lengua y literatura (gramática, ortografía, tiempos verbales, vocabulario, lectura, escritura creativa, análisis de textos literarios, poesía, etc.), 3. ciencias naturales (biología, física, química, medio ambiente, cambio climático, energía, tecnología, salud, etc.), 4. estudios sociales (historia, geografía, ciudades, capitales, paises, continentes, simón bolívar, colonia, independencia, eloy alfaro, provincias, rios, montañas, volcanes, islas, américa latina, civismo, cultura, derechos humanos, democracia, economía, etc.), 5. habilidades comunicativas en inglés (vocabulario, gramática, conversación, lectura, escritura, pronunciación, etc.). saludar, agradecer, felicitar, agradecer. responde: {prompt}",
