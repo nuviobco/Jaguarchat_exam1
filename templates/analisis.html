@@ -124,7 +124,7 @@
 </head>
 <body>
     <div class="container">
-        <img src="https://i.ibb.co/sPPL3F2/jaguar3.png" alt="Logo de Jaguar Chat" width="200px">
+        <img src="https://i.ibb.co/sPPL3F2/jaguar3.png" alt="Logo de Jaguar Chat" style="width: 200px;">
         <h1>Análisis de conversaciones</h1>
         <div class="user-info-container">
             <h2>Información del estudiante</h2>
@@ -172,12 +172,12 @@
                     <td>{{ conteo }}</td>
                 </tr>
                 {% endfor %}
-                <tr class="fila-verde-claro">
+                {% if palabras_contadas %}
                     <td rowspan="{{ palabras_contadas|length }}">Palabras más utilizadas</td>
                     <td>{{ palabras_contadas[0][0] }}</td>
                     <td>{{ palabras_contadas[0][1] }}</td>
                 {% else %}
-                    <td colspan="3"></td>>No hay palabras contadas</td>
+                    <td colspan="3">No hay palabras contadas</td>
                 {% endif %}
                 </tr>
                 {% for palabra, conteo in palabras_contadas[1:] %}
