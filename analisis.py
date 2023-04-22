@@ -80,6 +80,9 @@ def analizar_nivel_comprension(prompts, limit=10):
             resultados.append({'texto': texto, 'nivel_comprension': nivel_comprension})
     resultados = sorted(resultados, key=lambda x: x['nivel_comprension'], reverse=True)[:limit]
 
+    # Agregar la siguiente línea de impresión para verificar los resultados
+    print("Resultados de nivel de comprensión:", resultados)
+
     return resultados
 
 
